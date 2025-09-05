@@ -101,4 +101,85 @@ freopen("output.txt", "w", stdout);
 
 This defines a *long long*:
 ```c++
-long long x = 123456789123456789
+long long x = 123456789123456789LL;
+```
+The suffix usually denotes the type.
+
+A common mistake is to still use *int* somewhere while meaning to use *long long*.
+
+```c++
+int a = 123456789;
+long long b = a * a;
+cout << b << "\n"; \\ -1757895751
+```
+
+As a is an integer, a * a is also an integer. B will overflow before
+truncating! Either change a to *long long* or the expression to:
+```c++
+long long b = (long long) a * a;
+```
+
+Some contest systems or compilers provide a 128 bit type called *__int128_t*.
+
+*Modular Arithmetic* is done using the % operator.
+We denote by x mod m the remainder when x is divided by m.
+17 mod 5 = 2 because 17 = (3 * 5) + 2.
+
+Sometimes the answer to a problem is a very large number but it is enough to output it "modulo m", which implies the remainder when the answer is divided by m. (e.g modulo 10^9 + 7")
+The idea is that even if the actual answer is huge, it suffices to use a smaller type.
+
+Properties (remainder can be taken before the operation):
+- (a+b)modm = (amodm + bmodm)modm
+- (a-b)modm = (amodm - bmodm)modm
+- (ab)modm = (amodm.bmodm)modm
+
+So take remainder after every op and number never becomes too large. Proof is trivial
+
+For example, in n! mod m:
+
+```c++
+long long x = 1;
+for (int i = 2; i <= n; i++) {
+    x = (x*i)%m;
+}
+cout << x % m << "\n";
+```
+If there are subtractions in the code and the remainder may become negative, C++ and other LL languages take the remainder to be either zero or negative.
+To make sure there are no negative remainders, calculate the remainder as usual and add m if the result is negative.
+```c++
+x = x % m;
+if (x < 0) x += m;
+```
+
+*Floating point numbers* are usually represented by the 64-bit *double* and in g++, the 80-bit *double*. The extra bits make it more accurate.
+
+The required precision is given in the problem statement.
+You can print the required decimal places by:
+
+```c++
+printf("%.9f", x);
+```
+
+This prints value of x with 9 decimal places.
+
+Floating point imprecision becomes clear when some numbers cannot be represented accurately as floats, and there are rounding errors.
+
+```c++
+double x = 0.3 * 3 + 0.1;
+printf("%.20f\n", x); // 0.99999...99988898
+```
+
+The correct value should be 1!
+
+For this and similar reasons, it's risky to compare floating point nums with ==, as it is possible that the values should be equal but are not due to precision errors.
+
+Better way to compare is to assume that two numbers are equal if thedifference between them is less than e (epsilon) where e is a small number.
+
+In practice this can be done as follows: (epsilon being 10e-9)
+```c++
+if (abs(a-b) < 1e-9) {
+    // a and b are equal
+}
+```
+
+While they are inaccurate, integers up to 2^53 at most can still be represented accurately via a *double*.
