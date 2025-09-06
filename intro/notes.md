@@ -183,3 +183,69 @@ if (abs(a-b) < 1e-9) {
 ```
 
 While they are inaccurate, integers up to 2^53 at most can still be represented accurately via a *double*.
+
+## Shortening Code
+
+Shortening code is ideal as programs should be written as fast as possible. Aliases are defined for shorter names for dtypes and other parts of code.
+
+### Type Names
+
+*typedef* is used to give a shorter name to a dtype.
+
+```c++
+typedef long long ll;
+ll a = 123456789;
+```
+
+Now we can type *ll* instead of long long.
+Can be also used with the STL, or more complex types.
+
+```c++
+typedef vector<int> vi;
+typedef pair<int, int> pi;
+```
+
+*Macros* can also be used. Combining those with type names above:
+
+```c++
+#define F first
+#define S second
+#define PB push_back
+#define MP make_pair
+
+v.PB(MP(y1,x1));
+v.PB(MP(y2, x2));
+int d = v[i].F + v[i].S;
+```
+
+Macro can also have parameters which makes us possible to shorten loops and some other structures.
+
+```c++
+#define REP(i,a,b) for (int i = a; i <= b; i++)
+REP (i, 1, n) {
+    search(i);
+}
+```
+
+Macro causes bugs that are a little difficult to detect.
+The given macro does not always work as expected:
+
+```c++
+#define SQ(a) a * a
+cout << SQ(3 + 3) << "\n";
+```
+
+simplifies to:
+
+```c++
+cout << 3 + 3 * 3 * 3 << "\n"; // 15
+```
+
+A better version would be:
+
+```c++
+#define SQ(a) (a) * (a)
+cout << SQ(3+3) << "\n";
+// corresponds to:
+cout << (3+3)*(3+3) << "\n"; // 36
+```
