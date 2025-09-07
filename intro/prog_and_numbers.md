@@ -52,7 +52,7 @@ newline works faster than endl because endl almost always causes a stream flush.
 Input and output can be a bottleneck, add these to make input and output more efficient:
 
 ```c++
-ios:sync_with_stdio(0);
+ios::sync_with_stdio(0);
 cin.tie(0);
 ```
 
